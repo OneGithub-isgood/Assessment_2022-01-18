@@ -11,6 +11,10 @@ public class Book implements Serializable {
     private String bookCoverURL;
     private String bookExcerpt;
 
+    public Book() {
+        
+    }
+
     public static Book create(JsonObject jO) {
         final Book eachBook = new Book();
         eachBook.setWorks_ID(jO.getString("key"));

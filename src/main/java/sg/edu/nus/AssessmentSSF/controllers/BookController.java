@@ -35,11 +35,28 @@ public class BookController {
 
     @GetMapping("/book/{worksid}")
     public String showBook(Model model, @PathVariable(value="worksid") String worksid) {
-        List<String> bookQuery = serviceLogic.retrieve(worksid);
+        List<String> bookQuery = new ArrayList<>();
+        Book cacheBook = new Book();
+        if (bookCache.retrieve(worksid, "Book Title") != null) { 
+            logger.log(Level.INFO, "Book Work URL: %s".formatted(bookCache.retrieve(worksid, "Book Title"))+".");
+            bookQuery.add(bookCache.retrieve(worksid, "Book Title").toString());
+            bookQuery.add(bookCache.retrieve(worksid, "Book Description").toString());
+            bookQuery.add(bookCache.retrieve(worksid, "Book Excerpt").toString());
+        } else {
+            bookCache.retrieve(worksid, "Book Title");
+            bookQuery = serviceLogic.retrieve(worksid);
+            Map<String, String> bookMap = new HashMap<>();
+            bookMap.put("Book Title", (bookQuery.get(0)).toString());
+            bookMap.put("Book Description", (bookQuery.get(1)).toString());
+            bookMap.put("Book Excerpt", (bookQuery.get(2)).toString());
+            bookCache.store(worksid, bookMap);
+            model.addAttribute("bookInfo", bookQuery);
+        }
+        bookCache.retrieve(worksid, "Book Title");
+        bookQuery = serviceLogic.retrieve(worksid);
         Map<String, String> bookMap = new HashMap<>();
         bookMap.put("Book Title", (bookQuery.get(0)).toString());
         bookMap.put("Book Description", (bookQuery.get(1)).toString());
-        logger.log(Level.INFO, "Book Work URL: %s".formatted(bookQuery.get(1))+".");
         bookMap.put("Book Excerpt", (bookQuery.get(2)).toString());
         bookCache.store(worksid, bookMap);
         model.addAttribute("bookInfo", bookQuery);
