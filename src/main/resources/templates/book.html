@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .companyName { display: flex; justify-content: center; }
+        .topBar { overflow: hidden; background-color: rgb(0, 66, 130); }
+        .topBar a { float: left; display: block; color:white; padding: 6px; text-decoration: none; }
+        .topBar a.active { background-color: rgb(239, 124, 0); color:white; }
+        .topBar form { float: right; margin-top: 4px; margin-right: 2px; }
+    </style>
+</head>
+<body>
+    <h1 class="companyName">Heng Mui Keng National Library</h1>
+    <div class="topBar">
+        <a href="/" >Home</a>
+        <a href="/" class="active" >Home</a>
+        <a href="/" >Home</a>
+        <form method="GET" action="/search" class="searchBox">
+            <input type="text" name="queryPattern" placeholder="Search books by title">
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <form
+        action="/order/{orderID}"
+        th:object="${FoodOrder}"
+        method="post"
+    >
+    <h3>Food order</h3>
+    <p th:if="${showMessage != null}">
+        <h5>Your order has been created</h5>
+    </p>
+    <p>
+        <label>Title: </label>
+        <label th:text="${bookInfo[0]}" />
+    </p>
+    <p>
+        <label>Description: </label>
+        <label th:text="${bookInfo[1]}" />
+    </p>
+    <p>
+        <label>Excerpt: </label>
+        <label th:text="${bookInfo[2]}" />
+    </p>
+    <p>
+        <label>Cached: </label>
+        <label th:text="${bookInfo[0]}" />
+    </p>
+    </form>
+    <form action:"/index">
+        <input type="submit" value="Main Page" />
+    </form>
+</body>
+
+</html>
